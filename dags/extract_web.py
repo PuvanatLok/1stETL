@@ -1,24 +1,20 @@
 ## Library for Web Scraping
-import selenium
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 ## Library for data transformation
-import time
 from datetime import date
 import pandas as pd
 import numpy as np
 ## Library for NoSQL Connection
-import pymongo
 from pymongo import MongoClient
 
 def extractWeb():
     ## Extract section
     baseUrl = 'https://www.imdb.com/chart/toptv/?ref_=nv_tvv_250'
     driver = webdriver.Chrome(ChromeDriverManager().install())
-    driver.get(baseUrl) 
+    driver.get(baseUrl)
     links = driver.find_elements(By.XPATH, '//*[@id="sidebar"]/div[7]/span/ul/li/a')
-    category = [cat.text for cat in driver.find_elements(By.XPATH, '//*[@id="sidebar"]/div[7]/span/ul/li')]
     Links = [link.get_attribute('href') for link in links]
 
     ## list to keep information
@@ -151,7 +147,7 @@ def loadData(lst):
     movies_collection = db['movies']
     movies_collection.insert_many(lst)
 
-if __name__ == '__main__':
+def ETL():
     try:
         df = extractWeb()
         transform_lst = transform_data(df)
