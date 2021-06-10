@@ -3,8 +3,6 @@ from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 import requests
-## Library for managing directories
-import os
 ## Library for data transformation
 import time
 from datetime import date
