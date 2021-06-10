@@ -1,5 +1,5 @@
 from datetime import timedelta
-import airflow
+import datetime
 from airflow import DAG
 from airflow.operators.python_operator import PythonOperator
 from airflow.utils.dates import days_ago
@@ -22,13 +22,13 @@ dag = DAG(
     'ETL_dag',
     default_args=default_args,
     description='First ETL process!',
-    schedule_interval= '0 0 * * *',
+    schedule_interval= '0 0 * * *'
 )
 
 ## Create Airflow instance to run ETL with dag argument
 run_ETL = PythonOperator(
-                task_id='IMDBExtract_etl'
-                python_callable=ETL
+                task_id='IMDBExtract_etl',
+                python_callable=ETL,
                 dag=dag
                 )
 
