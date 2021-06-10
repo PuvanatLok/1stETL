@@ -1,18 +1,21 @@
 ## Library for Web Scraping
 from selenium import webdriver
-from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
+from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.utils import ChromeType
 ## Library for data transformation
 from datetime import date
 import pandas as pd
 import numpy as np
+## Library for managing dir
+import os
 ## Library for NoSQL Connection
 from pymongo import MongoClient
 
 def extractWeb():
     ## Extract section
     baseUrl = 'https://www.imdb.com/chart/toptv/?ref_=nv_tvv_250'
-    driver = webdriver.Chrome(ChromeDriverManager().install())
+    driver = webdriver.Chrome(ChromeDriverManager(chrome_type=ChromeType.GOOGLE).install())
     driver.get(baseUrl)
     links = driver.find_elements(By.XPATH, '//*[@id="sidebar"]/div[7]/span/ul/li/a')
     Links = [link.get_attribute('href') for link in links]
@@ -145,17 +148,7 @@ def loadData(lst):
     db = client['test1']
     ## Connect to collection to keep all movie information
     movies_collection = db['movies']
-    movies_collection.insert_many(lst)
-
-def ETL():
-    try:
-        df = extractWeb()
-        transform_lst = transform_data(df)
-        if len(transform_lst) != 0:
-            print('Loading data....')
-            loadData(transform_lst)
-        else:
-            print('No Data loaded')
-        print('Data Loading Successfully')
-    except Exception as e:
-        print(e)
+    if len(lst) != 0:
+        movies_collection.insert_many(lst)
+    else:
+        print('No data')
