@@ -2,7 +2,7 @@ from datetime import timedelta
 import datetime
 from airflow import DAG
 from airflow.operators.python_operator import PythonOperator
-from extract_web import *
+from extract_web import ETL
 
 ## Specific argument for dag
 default_args = {
@@ -10,8 +10,8 @@ default_args = {
     'depends_on_past': False,
     'start_date': datetime(2021, 6, 10),
     'email': ['puvanut95@hotmail.com'],
-    'email_on_failure': False,
-    'email_on_retry': False,
+    'email_on_failure': True,
+    'email_on_retry': True,
     'retries': 1,
     'retry_delay': timedelta(minutes=5)
 }
